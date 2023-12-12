@@ -22,7 +22,7 @@ function Signup() {
         redirect: false,
       });
 
-      if (res?.ok) return router.push("/dashboard/profile");
+      if (res?.ok) return router.push("/dashboard");
     } catch (err) {
       if (err instanceof AxiosError) {
         const errorMessage = err.response?.data.message;
