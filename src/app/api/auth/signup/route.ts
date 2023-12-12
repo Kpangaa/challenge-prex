@@ -17,6 +17,7 @@ export async function POST(request: Request) {
       );
 
     const userFound = await User.findOne({ email });
+    console.log("🚀 ~ file: route.ts:20 ~ POST ~ userFound:", userFound);
 
     if (userFound)
       return NextResponse.json(
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
         email,
         createdAt: savedUser.createdAt,
         updatedAt: savedUser.updatedAt,
-        _id: savedUser._id
+        _id: savedUser._id,
       },
       { status: 201 }
     );
@@ -59,5 +60,18 @@ export async function POST(request: Request) {
       );
     }
     return NextResponse.error();
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    await connectDataBase();
+    let start = request.url.search("email");
+    const params = new URLSearchParams(request.url.slice(start - 1));
+    const email = params.get("email");
+    const userFound = await User.findOne({ email });
+    return NextResponse.json(userFound);
+  } catch (error) {
+    console.log(error);
   }
 }
