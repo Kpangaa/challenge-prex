@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
 import Providers from './Providers'
+import Navbar from '@/components/Navbar'
 
 const inter = Montserrat({ subsets: ['latin'], weight: '700'})
 
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <Providers>
-          {children}
+      <Providers>
+          <Navbar />
+          <div className="container mx-auto">{children}</div>
         </Providers>
+
         </body>
     </html>
   )
