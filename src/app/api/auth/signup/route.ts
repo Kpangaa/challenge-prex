@@ -17,7 +17,6 @@ export async function POST(request: Request) {
       );
 
     const userFound = await User.findOne({ email });
-    console.log("🚀 ~ file: route.ts:20 ~ POST ~ userFound:", userFound);
 
     if (userFound)
       return NextResponse.json(
@@ -37,7 +36,6 @@ export async function POST(request: Request) {
     });
 
     const savedUser = await user.save();
-    console.log(savedUser);
 
     return NextResponse.json(
       {
