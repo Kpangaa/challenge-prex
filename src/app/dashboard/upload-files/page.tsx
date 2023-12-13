@@ -24,6 +24,7 @@ function FilePage() {
         method: "POST",
         body: formData,
       });
+      console.log("🚀 ~ file: page.tsx:27 ~ handleSubmit ~ res:", res)
 
       if (res.ok) {
         const data = await res.json();

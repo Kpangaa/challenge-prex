@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import axios from "axios";
@@ -15,15 +16,24 @@ import {
   Autocomplete,
   AutocompleteItem,
 } from "@nextui-org/react";
+import Router from "next/router";
 
 function MyFiles() {
   const [files, setFiles] = useState<[]>();
   const [userShare, setUserShare] = useState<[]>();
   const [email, setEmail] = useState("");
   const [emailShare, setEmailShare] = useState("");
+  console.log("🚀 ~ file: page.tsx:25 ~ MyFiles ~ emailShare:", emailShare)
   const [urlShare, setUrlShare] = useState("");
+  console.log("🚀 ~ file: page.tsx:27 ~ MyFiles ~ urlShare:", urlShare)
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const CLOUDINARY_URL = "https://res.cloudinary.com/dqcz2mhzo/image/upload/";
+  const DOWNLOAD = "fl_attachment/";
+  const formData = new FormData();
+
+  const handleRefresh = () => {
+    Router.reload();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +55,7 @@ function MyFiles() {
     };
   }, []);
 
+
   const userShareEmail = userShare?.filter(
     (user) => (user as any).email !== email
   );
@@ -55,7 +66,6 @@ function MyFiles() {
 
   const onShareFile = async () => {
     try {
-      const formData = new FormData();
       formData.append("url", urlShare);
       formData.append("email", emailShare);
       const resp = await fetch("/api/share", {
@@ -67,10 +77,10 @@ function MyFiles() {
     }
   };
 
-  const onDownloadFile = async () => {
+  const onDownloadFile = async (url: string) => {
     try {
-      const newUrl = CLOUDINARY_URL + "fl_attachment/";
-      const file = urlShare.slice(CLOUDINARY_URL.length);
+      const newUrl = CLOUDINARY_URL + DOWNLOAD;
+      const file = url.slice(CLOUDINARY_URL.length);
       const fileName = file.split("/").pop();
       if (fileName) {
         const aTag = document.createElement("a");
@@ -85,12 +95,17 @@ function MyFiles() {
     }
   };
 
-  const onDeleteFile = async () => {
+  const onDeleteFile = async (url: string) => {
     try {
-      
-    } catch (error) {
-    
-    }
+      formData.append("url", url);
+      formData.append("email", email);
+      const resp = await fetch("/api/delete", {
+        method: "POST",
+        body: formData,
+      });
+      location.reload()
+      console.log("🚀 ~ file: page.tsx:97 ~ onDeleteFile ~ resp:", resp);
+    } catch (error) {}
   };
 
   return (
@@ -161,8 +176,7 @@ function MyFiles() {
                   </Button>
                   <Button
                     onPress={() => {
-                      setUrlShare(image);
-                      onDownloadFile();
+                      onDownloadFile(image);
                     }}
                     color="default"
                   >
@@ -170,8 +184,7 @@ function MyFiles() {
                   </Button>
                   <Button
                     onPress={() => {
-                      setUrlShare(image);
-                      onOpen();
+                      onDeleteFile(image);
                     }}
                     color="warning"
                   >
