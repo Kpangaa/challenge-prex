@@ -1,23 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
-
+import { useRouter } from "next/navigation";
+import { memo, useCallback, useEffect } from "react";
 
 function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const handleRefresh = () => {
-    router.refresh()
-  };
+  const handleRefresh = useCallback(() => {
+    router.refresh();
+  }, []);
   useEffect(() => {
-    handleRefresh()
-  
+    handleRefresh();
+
     return () => {
-      handleRefresh()
-    }
-  }, [])
+      handleRefresh();
+    };
+  }, []);
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
@@ -46,4 +45,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default memo(ProfilePage);

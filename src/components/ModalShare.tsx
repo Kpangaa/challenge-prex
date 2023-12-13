@@ -1,19 +1,34 @@
-"use client"
+"use client";
 
-import { Autocomplete, AutocompleteItem, Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
-import React from 'react'
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
+import React from "react";
 
 interface ModalShareProps {
-    isOpen: boolean
-    onOpenChange: () => void
-    userShareEmail: never[] | undefined
-    setEmailShare: (value: React.SetStateAction<string>) => void
-    onShareFile: () => Promise<void>
+  isOpen: boolean;
+  onOpenChange: () => void;
+  userShareEmail: never[] | undefined;
+  setEmailShare: (value: React.SetStateAction<string>) => void;
+  onShareFile: () => Promise<void>;
 }
-function ModalShare({isOpen, onOpenChange, userShareEmail, setEmailShare, onShareFile}: ModalShareProps) {
+function ModalShare({
+  isOpen,
+  onOpenChange,
+  userShareEmail,
+  setEmailShare,
+  onShareFile,
+}: ModalShareProps) {
   return (
     <>
-        <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -39,13 +54,16 @@ function ModalShare({isOpen, onOpenChange, userShareEmail, setEmailShare, onShar
                 </div>
               </ModalBody>
               <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
                 <Button
                   color="primary"
                   onPress={() => {
                     onShareFile();
                     onClose();
                     setTimeout(() => {
-                      window.alert('The file was shared successfully');
+                      window.alert("The file was shared successfully");
                     }, 1000);
                   }}
                 >
@@ -57,7 +75,7 @@ function ModalShare({isOpen, onOpenChange, userShareEmail, setEmailShare, onShar
         </ModalContent>
       </Modal>
     </>
-  )
+  );
 }
 
-export default ModalShare
+export default ModalShare;

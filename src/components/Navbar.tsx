@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
+import { memo } from "react";
 
 async function Navbar() {
   const session = await getServerSession();
@@ -58,4 +59,4 @@ async function Navbar() {
   );
 }
 
-export default Navbar;
+export default memo(Navbar);

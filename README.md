@@ -23,9 +23,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Learn More
 
 El proyecto esta hecho con mongodb Atlas, para almacenar los datos.
-Las credenciales estan puestas en crudo dentro del proyecto, para que puedan conectarse.
+Las credenciales se las pasare en un txt, para que puedan conectarse.
 
-Use tambien para el almacenamiento de archivos, en este caso imagenes y videos, cloudinary. Lo mismo que con mongodb, deje las credenciales en bruto para que puedan conectarse.
+Para el almacenamiento de archivos use Cloudinary, que en este caso solo almacena imagenes y videos. Deje las credenciales en bruto para que puedan conectarse.
 
 Use Tailwind para los styles y ts, como lenguaje.
 

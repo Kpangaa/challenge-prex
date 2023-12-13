@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import Image from "next/image";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ function FilePage() {
   const [message, setMessage] = useState<string>();
   const router = useRouter();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const dataSession = await getSession();
     if (!file) return;
@@ -35,16 +36,16 @@ function FilePage() {
     } catch (error) {
       console.error(error);
     }
-  };
+  },[file, router]);
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
     setFile(e.target.files?.[0]);
-  };
+  },[]);
 
-  const handleMyFiles = () => {
+  const handleMyFiles = useCallback(() => {
     router.push("/dashboard/my-files");
-  };
+  },[]);
 
   return (
     <div className="flex h-screen justify-center items-center flex-col">
