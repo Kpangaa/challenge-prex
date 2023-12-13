@@ -16,24 +16,24 @@ import {
   Autocomplete,
   AutocompleteItem,
 } from "@nextui-org/react";
-import Router from "next/router";
+import ShareIcon from "@/components/ShareIcon";
+import DownloadIcon from "@/components/DownloadIcon";
+import DeleteIcon from "@/components/DeleteIcon";
+import ListButton from "@/components/ListButton";
 
 function MyFiles() {
+
   const [files, setFiles] = useState<[]>();
   const [userShare, setUserShare] = useState<[]>();
   const [email, setEmail] = useState("");
   const [emailShare, setEmailShare] = useState("");
-  console.log("🚀 ~ file: page.tsx:25 ~ MyFiles ~ emailShare:", emailShare)
   const [urlShare, setUrlShare] = useState("");
-  console.log("🚀 ~ file: page.tsx:27 ~ MyFiles ~ urlShare:", urlShare)
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const CLOUDINARY_URL = "https://res.cloudinary.com/dqcz2mhzo/image/upload/";
   const DOWNLOAD = "fl_attachment/";
   const formData = new FormData();
-
-  const handleRefresh = () => {
-    Router.reload();
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,20 +55,19 @@ function MyFiles() {
     };
   }, []);
 
-
   const userShareEmail = userShare?.filter(
     (user) => (user as any).email !== email
   );
 
   if (!files) {
-    return <div>Cargando....</div>;
+    return <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center text-4xl">Cargando....</div>;
   }
 
   const onShareFile = async () => {
     try {
       formData.append("url", urlShare);
       formData.append("email", emailShare);
-      const resp = await fetch("/api/share", {
+      await fetch("/api/share", {
         method: "POST",
         body: formData,
       });
@@ -99,18 +98,17 @@ function MyFiles() {
     try {
       formData.append("url", url);
       formData.append("email", email);
-      const resp = await fetch("/api/delete", {
+      await fetch("/api/delete", {
         method: "POST",
         body: formData,
       });
-      location.reload()
-      console.log("🚀 ~ file: page.tsx:97 ~ onDeleteFile ~ resp:", resp);
+      location.reload();
     } catch (error) {}
   };
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -122,8 +120,8 @@ function MyFiles() {
                   <Autocomplete label="Select an user" className="max-w-xs">
                     {userShareEmail!.map((userShare) => (
                       <AutocompleteItem
-                        style={{ color: "black" }}
                         key={(userShare as any)._id}
+                        style={{ color: "black" }}
                         value={(userShare as any).email as string}
                         onClick={(e) =>
                           setEmailShare((e.target as any).outerText as string)
@@ -150,51 +148,31 @@ function MyFiles() {
           )}
         </ModalContent>
       </Modal>
-      <div>
-        <h1>Imagenes Propias</h1>
-        <div className="justify-center grid grid-cols-5 flex-col gap-5">
+      <h1 className="mr-4 ml-4 mt-5 mb-6 text-3xl">Imagenes Propias</h1>
+      <div className="flex-1 w-screen h-screen">
+        <div className="justify-center items-center grid grid-cols-5 gap-4 mr-4 ml-4">
           {files.length > 0 ? (
             files.map((image, idx) => (
-              <div key={idx} className="bg-gray-600 rounded-xl">
+              <div key={idx} className="bg-transparent rounded-xl flex flex-1 flex-col relative">
                 <Image
                   key={idx}
                   src={image}
                   alt="Uploaded file"
                   className="w-52 h-52 object-contain mx-auto"
-                  width={100}
-                  height={100}
+                  width={150}
+                  height={150}
                 />
-                <div>
-                  <Button
-                    onPress={() => {
-                      setUrlShare(image);
-                      onOpen();
-                    }}
-                    color="primary"
-                  >
-                    Share
-                  </Button>
-                  <Button
-                    onPress={() => {
-                      onDownloadFile(image);
-                    }}
-                    color="default"
-                  >
-                    DO
-                  </Button>
-                  <Button
-                    onPress={() => {
-                      onDeleteFile(image);
-                    }}
-                    color="warning"
-                  >
-                    DE
-                  </Button>
-                </div>
+                <ListButton
+                  image={image}
+                  setUrlShare={setUrlShare}
+                  onDeleteFile={onDeleteFile}
+                  onDownloadFile={onDownloadFile}
+                  onOpenShare={onOpen}
+                />
               </div>
             ))
           ) : (
-            <h2>No hay imagenes cargadas</h2>
+            <h2 className="flex justify-center items-center  w-screen h-unit-14 text-3xl">No hay imagenes cargadas</h2>
           )}
         </div>
       </div>

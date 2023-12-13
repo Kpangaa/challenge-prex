@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     );
     const url = response.secure_url;
 
-    const perro = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       {
         email: {
           $eq: email,
@@ -60,7 +60,6 @@ export async function POST(request: NextRequest) {
         },
       }
     );
-    console.log("🚀 ~ file: route.ts:63 ~ POST ~ perro:", perro)
 
     return NextResponse.json({
       success: true,
@@ -68,6 +67,6 @@ export async function POST(request: NextRequest) {
       url: (response as any).secure_url,
     });
   } catch (error) {
-    console.log(error);
+    NextResponse.error()
   }
 }

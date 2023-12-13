@@ -4,7 +4,6 @@ import { connectDataBase } from "@/libs/mongodb";
 
 export async function POST(request: NextRequest) {
   const data = await request.formData();
-  console.log("🚀 ~ file: route.ts:7 ~ POST ~ data:", data)
   const url: string | null = data.get("url") as unknown as string;
   const email: string | null = data.get("email") as unknown as string;
   if (!url || !email) {
@@ -21,18 +20,17 @@ export async function POST(request: NextRequest) {
       },
       {
         $pull: {
-            myFilesUrl: url,
+          myFilesUrl: url,
         },
       }
     );
-    console.log("🚀 ~ file: route.ts:27 ~ POST ~ userUpdate:", userUpdate)
-
+    
     return NextResponse.json({
       success: true,
       message: "Imagen eliminada con exito!!!",
       user: userUpdate,
     });
   } catch (error) {
-    console.log(error);
+    return NextResponse.error()
   }
 }

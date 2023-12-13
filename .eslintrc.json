@@ -1,3 +1,38 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "import/first": "warn",
+    "import/newline-after-import": "warn",
+    "import/no-duplicates": "error",
+    "import/no-named-as-default-member": "off",
+    "import/no-named-as-default": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "tailwindcss/classnames-order": "off", // Corregir cuando actualicen la librería. https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/231
+    "react/jsx-sort-props": [
+      "warn",
+      {
+        "callbacksLast": true,
+        "shorthandFirst": true,
+        "ignoreCase": true,
+        "reservedFirst": true,
+        "noSortAlphabetically": true
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  "env": {
+    "jest": true,
+    "es6": true, // enable ES2015 features.
+    "browser": true, // enable use of global browser variables like `windows`.
+    "node": true // enable use of global node variables like `process`.
+  },
+  "parser": "@typescript-eslint/parser", // Allows Eslint to understand TypeScript syntax.
+  "parserOptions": {
+    "ecmaVersion": 2021, // ECMAScript version supported in the project.
+    "sourceType": "module", // set to `module` because we ue ECMAScript modules.
+    "ecmaFeatures": {
+      "jsx": true // enable jsx for React.
+    }
+  }
 }

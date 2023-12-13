@@ -31,6 +31,6 @@ export async function POST(request: NextRequest) {
       url,
     });
   } catch (error) {
-    console.log(error);
+    NextResponse.error()
   }
 }

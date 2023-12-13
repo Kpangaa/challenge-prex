@@ -24,11 +24,13 @@ function FilePage() {
         method: "POST",
         body: formData,
       });
-      console.log("🚀 ~ file: page.tsx:27 ~ handleSubmit ~ res:", res)
 
       if (res.ok) {
         const data = await res.json();
         setMessage(data.message);
+        setTimeout(() => {
+          router.push("/dashboard/my-files");
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -66,9 +68,9 @@ function FilePage() {
           <Image
             src={URL.createObjectURL(file)}
             alt="Uploaded file"
-            className="w-64 h-64 object-contain mx-auto"
-            width={256}
-            height={256}
+            className="w-52 h-52 object-contain mx-auto"
+            width={205}
+            height={205}
           />
         )}
 
@@ -78,9 +80,8 @@ function FilePage() {
         >
           My Files
         </button>
-
-        {message && <h2>{message}</h2>}
       </div>
+      {message && <h2 className="text-gray-300 mt-3 mb-3 justify-center items-center">{message}</h2>}
     </div>
   );
 }
