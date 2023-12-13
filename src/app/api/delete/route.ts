@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      message: "Imagen eliminada con exito!!!",
+      message: "Image successfully deleted!!!",
       user: userUpdate,
     });
   } catch (error) {

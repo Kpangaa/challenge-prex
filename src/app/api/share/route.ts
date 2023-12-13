@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Imagen compartida con exito!!!",
+      message: "Image shared successfully!!!",
       url,
     });
   } catch (error) {

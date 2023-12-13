@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Imagen subida con exito!!!",
+      message: "Image uploaded successfully!!!",
       url: (response as any).secure_url,
     });
   } catch (error) {
