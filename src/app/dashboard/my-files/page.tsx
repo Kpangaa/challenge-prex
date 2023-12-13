@@ -4,19 +4,38 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Autocomplete,
+  AutocompleteItem,
+} from "@nextui-org/react";
 
 function MyFiles() {
   const [files, setFiles] = useState<[]>();
+  const [userShare, setUserShare] = useState<[]>();
+  const [email, setEmail] = useState("");
+  const [emailShare, setEmailShare] = useState("");
+  const [urlShare, setUrlShare] = useState("");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   useEffect(() => {
     const fetchData = async () => {
       const dataSession = await getSession();
+      setEmail(dataSession?.user?.email!);
       if (dataSession?.user) {
         const signupResponse = await axios.get("/api/auth/signup", {
           params: {
             email: dataSession.user?.email,
           },
         });
-        setFiles(signupResponse.data.myFilesUrl);
+        setFiles(signupResponse.data.userFound.myFilesUrl);
+        setUserShare(signupResponse.data.userFounds);
       }
     };
     fetchData();
@@ -25,41 +44,99 @@ function MyFiles() {
     };
   }, []);
 
+  const userShareEmail = userShare?.filter(
+    (user) => (user as any).email !== email
+  );
+
   if (!files) {
     return <div>Cargando....</div>;
   }
+
+  const onShareFile = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("url", urlShare);
+      formData.append("email", emailShare);
+      const resp = await fetch("/api/share", {
+        method: "POST",
+        body: formData,
+      });
+      console.log("🚀 ~ file: page.tsx:61 ~ onShareFile ~ resp:", resp);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div>
+    <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Share file
+              </ModalHeader>
+              <ModalBody>
+                <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                  <Autocomplete label="Select an user" className="max-w-xs">
+                    {userShareEmail!.map((userShare) => (
+                      <AutocompleteItem
+                        style={{ color: "black" }}
+                        key={(userShare as any)._id}
+                        value={(userShare as any).email as string}
+                        onClick={(e) =>
+                          setEmailShare((e.target as any).outerText as string)
+                        }
+                      >
+                        {(userShare as any).email}
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    onShareFile();
+                    onClose();
+                  }}
+                >
+                  Share
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div>
         <h1>Imagenes Propias</h1>
-        <div className="justify-center grid grid-cols-5 flex-col">
-          {files.length > 0 &&
+        <div className="justify-center grid grid-cols-5 flex-col gap-5">
+          {files.length > 0 ? (
             files.map((image, idx) => (
-              <Image
-                key={idx}
-                src={image}
-                alt="Uploaded file"
-                className="w-60 h-60 object-contain mx-auto"
-                width={100}
-                height={100}
-              />
-            ))}
-        </div>
-      </div>
-      <div>
-        <h1>Imagenes que me compartieron</h1>
-        <div className="justify-center grid grid-cols-5 flex-col">
-          {files.length > 0 &&
-            files.map((image, idx) => (
-              <Image
-                key={idx}
-                src={image}
-                alt="Uploaded file"
-                className="w-60 h-60 object-contain mx-auto"
-                width={100}
-                height={100}
-              />
-            ))}
+              <div key={idx} className="bg-gray-600 rounded-xl">
+                <Image
+                  key={idx}
+                  src={image}
+                  alt="Uploaded file"
+                  className="w-52 h-52 object-contain mx-auto"
+                  width={100}
+                  height={100}
+                />
+                <Button
+                  onPress={() => {
+                    setUrlShare(image);
+                    onOpen();
+                  }}
+                  color="primary"
+                >
+                  Open Modal
+                </Button>
+              </div>
+            ))
+          ) : (
+            <h2>No hay imagenes cargadas</h2>
+          )}
         </div>
       </div>
     </div>

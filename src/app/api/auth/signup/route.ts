@@ -64,12 +64,20 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     await connectDataBase();
-    let start = request.url.search("email");
-    const params = new URLSearchParams(request.url.slice(start - 1));
-    const email = params.get("email");
-    const userFound = await User.findOne({ email });
-    return NextResponse.json(userFound);
+    const start = request.url.search("email");
+    let userFound
+    if (start !== -1) {
+      const params = new URLSearchParams(request.url.slice(start - 1));
+      const email = params.get("email");
+      userFound = await User.findOne({ email });
+    }
+    const userFounds = await User.find({});
+    return NextResponse.json({
+      userFound,
+      userFounds
+    });
   } catch (error) {
     console.log(error);
+    return NextResponse.error();
   }
 }
