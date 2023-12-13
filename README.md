@@ -27,6 +27,8 @@ Las credenciales estan puestas en crudo dentro del proyecto, para que puedan con
 
 Use tambien para el almacenamiento de archivos, en este caso imagenes y videos, cloudinary. Lo mismo que con mongodb, deje las credenciales en bruto para que puedan conectarse.
 
+Use Tailwind para los styles y ts, como lenguaje.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

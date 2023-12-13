@@ -5,21 +5,9 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Autocomplete,
-  AutocompleteItem,
-} from "@nextui-org/react";
-import ShareIcon from "@/components/ShareIcon";
-import DownloadIcon from "@/components/DownloadIcon";
-import DeleteIcon from "@/components/DeleteIcon";
+import { useDisclosure } from "@nextui-org/react";
 import ListButton from "@/components/ListButton";
+import ModalShare from "@/components/ModalShare";
 
 function MyFiles() {
 
@@ -108,46 +96,13 @@ function MyFiles() {
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
-      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Share file
-              </ModalHeader>
-              <ModalBody>
-                <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                  <Autocomplete label="Select an user" className="max-w-xs">
-                    {userShareEmail!.map((userShare) => (
-                      <AutocompleteItem
-                        key={(userShare as any)._id}
-                        style={{ color: "black" }}
-                        value={(userShare as any).email as string}
-                        onClick={(e) =>
-                          setEmailShare((e.target as any).outerText as string)
-                        }
-                      >
-                        {(userShare as any).email}
-                      </AutocompleteItem>
-                    ))}
-                  </Autocomplete>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="primary"
-                  onPress={() => {
-                    onShareFile();
-                    onClose();
-                  }}
-                >
-                  Share
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <ModalShare 
+        isOpen={isOpen}
+        setEmailShare={setEmailShare}
+        userShareEmail={userShareEmail}
+        onOpenChange={onOpenChange}
+        onShareFile={onShareFile}
+      />
       <h1 className="mr-4 ml-4 mt-5 mb-6 text-3xl">Imagenes Propias</h1>
       <div className="flex-1 w-screen h-screen">
         <div className="justify-center items-center grid grid-cols-5 gap-4 mr-4 ml-4">

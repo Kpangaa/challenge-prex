@@ -8,7 +8,7 @@ async function Navbar() {
     <nav className="bg-zinc-900 p-4">
       <div className="container mx-auto flex justify-between">
         <Link href="/">
-          <h1 className="font-bold text-xl">NextAuth</h1>
+          <h1 className="font-bold text-xl">Prex Challenge</h1>
         </Link>
 
         <ul className="flex gap-x-2">

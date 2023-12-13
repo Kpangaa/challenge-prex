@@ -4,10 +4,12 @@ import User from "@/models/user";
 import { v2 as cloudinary } from "cloudinary";
 import { connectDataBase } from "@/libs/mongodb";
 
+const {CLOUDINARY_API_SECRET_KEY, CLOUDINARY_API_KEY} = process.env
+
 cloudinary.config({
   cloud_name: "dqcz2mhzo",
-  api_key: "197859677822312",
-  api_secret: "5EhtsCCO73fH-oS7Y_KesD25XyA",
+  api_key: CLOUDINARY_API_KEY ? CLOUDINARY_API_KEY : "197859677822312",
+  api_secret: CLOUDINARY_API_SECRET_KEY ? CLOUDINARY_API_SECRET_KEY : "5EhtsCCO73fH-oS7Y_KesD25XyA",
 });
 
 interface ResponseCloudinary {
