@@ -1,39 +1,14 @@
 "use client";
 
-import {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Image from "next/image";
-import axios from "axios";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function FilePage() {
   const [file, setFile] = useState<File | undefined>();
-  const [imagen, setImage] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const dataSession = await getSession();
-      if (dataSession?.user) {
-        const signupResponse = await axios.get("/api/auth/signup", {
-          params: {
-            email: dataSession.user?.email,
-          },
-        });
-        console.log(
-          "🚀 ~ file: page.tsx:22 ~ fetchData ~ signupResponse:",
-          signupResponse
-        );
-      }
-    };
-    fetchData();
-    return () => {
-      fetchData();
-    };
-  }, []);
+  const [message, setMessage] = useState<string>();
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,8 +27,7 @@ function FilePage() {
 
       if (res.ok) {
         const data = await res.json();
-        setImage(data.url);
-        console.log("File uploaded successfully");
+        setMessage(data.message);
       }
     } catch (error) {
       console.error(error);
@@ -63,6 +37,10 @@ function FilePage() {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
     setFile(e.target.files?.[0]);
+  };
+
+  const handleMyFiles = () => {
+    router.push("/dashboard/my-files");
   };
 
   return (
@@ -92,9 +70,16 @@ function FilePage() {
             height={256}
           />
         )}
+
+        <button
+          className="bg-green-900 text-zinc-100 p-2 rounded block w-full disabled:opacity-50 mt-3 mb-2"
+          onClick={handleMyFiles}
+        >
+          My Files
+        </button>
+
+        {message && <h2>{message}</h2>}
       </div>
-      <div>MUCHOS IMAGENES SUBIDAS POR MI</div>
-      <div>MUCHOS IMAGENES QUE ME COMPARTIERON</div>
     </div>
   );
 }

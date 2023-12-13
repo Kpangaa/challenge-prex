@@ -1,10 +1,22 @@
 "use client";
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
+
 
 function ProfilePage() {
   const { data: session, status } = useSession();
-
-  console.log(session, status);
+  const router = useRouter();
+  const handleRefresh = () => {
+    router.refresh()
+  };
+  useEffect(() => {
+    handleRefresh()
+  
+    return () => {
+      handleRefresh()
+    }
+  }, [])
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">

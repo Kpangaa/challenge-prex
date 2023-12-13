@@ -18,8 +18,13 @@ async function Navbar() {
                 <Link href="/dashboard/profile">Perfil</Link>
               </li>
               <li className="px-3 py-1">
-                <Link href="/dashboard/files" as={`/dashboard/files`}>
-                  Files
+                <Link href="/dashboard/upload-files" as={`/dashboard/upload-files`}>
+                  Upload File
+                </Link>
+              </li>
+              <li className="px-3 py-1">
+                <Link href="/dashboard/my-files" as={`/dashboard/my-files`}>
+                  My Files
                 </Link>
               </li>
             </>

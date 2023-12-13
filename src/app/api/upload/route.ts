@@ -23,7 +23,6 @@ interface ResponseCloudinary {
 
 export async function POST(request: NextRequest) {
   const data = await request.formData();
-  console.log("🚀 ~ file: route.ts:19 ~ POST ~ data:", data);
   const file: File | null = data.get("file") as unknown as File;
   const email: string | null = data.get("email") as unknown as string;
 
@@ -57,14 +56,14 @@ export async function POST(request: NextRequest) {
       },
       {
         $addToSet: {
-          myfiles: url,
+          myFilesUrl: url,
         },
       }
     );
 
     return NextResponse.json({
       success: true,
-      message: "Imagen subida",
+      message: "Imagen subida con exito!!!",
       url: (response as any).secure_url,
     });
   } catch (error) {
