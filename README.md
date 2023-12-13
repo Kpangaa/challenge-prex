@@ -22,12 +22,12 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Learn More
 
-El proyecto esta hecho con mongodb Atlas, para almacenar los datos.
-Las credenciales se las pasare en un txt, para que puedan conectarse.
+El proyecto está hecho con mongodb Atlas, para almacenar los datos.
+Las credenciales se las pasaré en un txt, para que puedan conectarse.
 
-Para el almacenamiento de archivos use Cloudinary, que en este caso solo almacena imagenes y videos. Deje las credenciales en bruto para que puedan conectarse.
+Para el almacenamiento de archivos usé Cloudinary, que en este caso solo almacena imágenes y videos. Deje las credenciales en bruto para que puedan conectarse
 
-Use Tailwind para los styles y ts, como lenguaje.
+Use Tailwind para los styles y ts como lenguaje.
 
 ## Deploy on Vercel
 
