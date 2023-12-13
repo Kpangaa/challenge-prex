@@ -22,12 +22,10 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+El proyecto esta hecho con mongodb Atlas, para almacenar los datos.
+Las credenciales estan puestas en crudo dentro del proyecto, para que puedan conectarse.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Use tambien para el almacenamiento de archivos, en este caso imagenes y videos, cloudinary. Lo mismo que con mongodb, deje las credenciales en bruto para que puedan conectarse.
 
 ## Deploy on Vercel
 
